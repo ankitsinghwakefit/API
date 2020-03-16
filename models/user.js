@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var bcrypt = require("bcryptjs");
 
 var Schema = mongoose.Schema;
 
@@ -18,6 +19,13 @@ var userSchema = new Schema({
         default : false
     }
 },{timestamps : true});
+
+userSchema.pre("save", function(next){
+    if(this.password) {
+        this.password = bcrypt.hashSync(this.password, 10);
+    }
+    next();
+})
 
 var User = mongoose.model("User", userSchema );
 
