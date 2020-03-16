@@ -1,4 +1,5 @@
 var User = require("../models/user");
+var auth = require("../authmodel/auth");
 
 var userController = {};
 
@@ -11,6 +12,7 @@ userController.post = (req,res) =>{
     })
 
     newUser.save().then((user)=>{
+        var token = auth.generateJWT(user);
         res.status(200).json({
             success : true,
             data : user,
